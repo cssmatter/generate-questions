@@ -138,6 +138,22 @@ def generate_question_data(question, total_count, current_index):
         error_row["Overall Explanation"] = f"ERROR GENERATING: {str(e)}"
         return error_row
 
+def clean_all_text(text):
+    if not isinstance(text, str):
+        return text
+    
+    # Patterns to remove, matching the VBA script exactly
+    patterns = [
+        "A. ", "B. ", "C. ", "D. ", "E. ", "F. ",
+        "1. ", "2. ", "3. ", "4. ", "5. ", "6. ",
+        "a. ", "b. ", "c. ", "d. ", "e. ", "f. "
+    ]
+    
+    for p in patterns:
+        text = text.replace(p, "")
+    
+    return text
+
 def main():
     questions = load_questions(SOURCE_FOLDER, INPUT_FILE)
     if not questions:
@@ -149,7 +165,7 @@ def main():
     output_path = os.path.join(SOURCE_FOLDER, OUTPUT_FILE)
     writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
     
-    chunk_size = 80
+    chunk_size = 1
     for i in range(0, len(questions), chunk_size):
         chunk = questions[i:i + chunk_size]
         chunk_index = (i // chunk_size) + 1
@@ -165,7 +181,19 @@ def main():
             time.sleep(sleep_time) 
             
         df = pd.DataFrame(chunk_rows, columns=columns)
+        
+        # Apply global text cleaning to all cells in the DataFrame
+        for col in df.columns:
+            df[col] = df[col].apply(clean_all_text)
+            
+        # Export to Excel sheet
         df.to_excel(writer, sheet_name=f'Sheet{chunk_index}', index=False)
+        
+        # Export to CSV (matching VBA script behavior)
+        csv_filename = f"Sheet{chunk_index}.csv"
+        csv_path = os.path.join(SOURCE_FOLDER, csv_filename)
+        df.to_csv(csv_path, index=False, encoding='utf-8')
+        print(f"Exported: {csv_path}")
     
     writer.close()
     print(f"\nSuccess! Your Excel file has been saved in: {output_path}")
