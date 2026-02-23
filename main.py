@@ -387,8 +387,8 @@ def main():
             sleep_time = 2 if AI_PROVIDER == "gemini" else 1
             time.sleep(sleep_time) 
             
-            # 5-second pause after every 5 questions
-            if (j + 1) % 5 == 0 and (j + 1) < len(chunk):
+            # 10-second pause after every 10 questions
+            if (j + 1) % 10 == 0 and (j + 1) < len(chunk):
                 print("--- Rate limit pause (5s) ---")
                 time.sleep(5)
             
