@@ -19,9 +19,9 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Folder and File paths
-SOURCE_FOLDER = r"C:\Users\manis\Udemy\certifications\Interview Practice Tests\Updated\PENDING\AEM Interview Questions Practice Test"
+SOURCE_FOLDER = r"C:\Users\manis\Udemy\certifications\Interview Practice Tests\Updated\PENDING\Agile Interview Questions Practice Test"
 INPUT_FILE = "questions.txt"
-OUTPUT_FILE = "AEM_Interview_Questions_Generated.xlsx"
+OUTPUT_FILE = "Agile_Interview_Questions_Generated.xlsx"
 
 # Initialize the selected model
 model = None
@@ -94,8 +94,8 @@ def generate_question_data(question, total_count, current_index):
     print(f"Processing question {current_index}/{total_count}: {question[:50]}...")
     
     prompt = f"""
-    You are an expert AEM (Adobe Experience Manager) architect. 
-    Analyze the following AEM interview question and generate 6 multiple-choice options (1 correct, 5 tricky but incorrect distractors), explanations for each, the correct answer index, an overall explanation, and the domain.
+    You are an expert Agile coach. 
+    Analyze the following Agile interview question and generate 6 multiple-choice options (1 correct, 5 tricky but incorrect distractors), explanations for each, the correct answer index, an overall explanation, and the domain.
     
     Question: "{question}"
     
@@ -120,7 +120,7 @@ def generate_question_data(question, total_count, current_index):
       "Explanation 6": "Explanation why 6 is right/wrong",
       "Correct Answers": "1",
       "Overall Explanation": "A comprehensive summary of the concept",
-      "Domain": "AEM topic area (e.g., OSGi, JCR, Sling, Architecture)"
+      "Domain": "Agile topic area (e.g., Scrum, Kanban, XP, SAFe)"
     }}
     """
     
@@ -334,7 +334,7 @@ def create_docx(df, folder_name, output_file):
     # Copyright
     doc.add_heading("Copyright Disclaimer", level=1)
     text = (
-        "© 2026 Manish Dnyandeo Salunke. All rights reserved.\n\n"
+        "© Manish Dnyandeo Salunke. All rights reserved.\n\n"
         "No part of this book may be reproduced, stored, or transmitted in any form or by any means—electronic, mechanical, "
         "photocopying, recording, or otherwise—without the prior written permission of the author, "
         "except for brief quotations used in reviews or educational contexts.\n\n"
@@ -388,9 +388,9 @@ def main():
             time.sleep(sleep_time) 
             
             # 10-second pause after every 10 questions
-            if (j + 1) % 10 == 0 and (j + 1) < len(chunk):
+            if (j + 1) % 5 == 0 and (j + 1) < len(chunk):
                 print("--- Rate limit pause (5s) ---")
-                time.sleep(5)
+                time.sleep(3)
             
         df = pd.DataFrame(chunk_rows, columns=columns)
         
