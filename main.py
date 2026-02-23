@@ -3,22 +3,25 @@ import pandas as pd
 import json
 import time
 import re
+import os
+from dotenv import load_dotenv
 
-# 1. Set up your API Key here
-# Get one for free at https://aistudio.google.com/
-API_KEY = "AIzaSyC5u_KwikvEk63pEygVOkCprjFHoXoMa-o"
+# Load environment variables from .env file
+load_dotenv()
+
+# 1. Configuration
+API_KEY = os.getenv("GEMINI_API_KEY")
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY not found in .env file")
 genai.configure(api_key=API_KEY)
+
+# Folder and File paths
+SOURCE_FOLDER = r"C:\Users\manis\Udemy\certifications\Interview Practice Tests\Updated\PENDING\AEM Interview Questions Practice Test"
+INPUT_FILE = "questions.txt"
+OUTPUT_FILE = "AEM_Interview_Questions_Generated.xlsx"
 
 # Use the Gemini model
 model = genai.GenerativeModel('gemini-2.5-flash')
-
-# 2. Paste your list of questions here (I've added the first 3 as an example)
-questions_list = [
-    "1. Which architectural layer in AEM is responsible for providing a hierarchical data store and implementing the JSR-283 specification?",
-    "2. In the context of AEM's technology stack, what is the primary role of Apache Felix?",
-    "3. Which design pattern does the Apache Sling framework primarily use to map HTTP request URLs to repository resources?"
-    # ... Add the rest of your 80 questions here
-]
 
 # The columns matching your template
 columns = [
@@ -32,21 +35,36 @@ columns = [
     "Correct Answers", "Overall Explanation", "Domain"
 ]
 
-all_rows = []
+def load_questions(folder_path, file_name):
+    questions = []
+    file_path = os.path.join(folder_path, file_name)
+    
+    if not os.path.exists(file_path):
+        print(f"Error: {file_path} not found.")
+        return []
 
-print(f"Starting generation for {len(questions_list)} questions...")
-for i, question in enumerate(questions_list):
-    # Remove leading numbering like "1. ", "1) ", "Question 1: " etc.
-    clean_question = re.sub(r'^(\d+[\.\)]|Question \d+:?)\s*', '', question, flags=re.IGNORECASE).strip()
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            # Skip empty lines, section headers like "Section 1", "Section 2" etc.
+            if not line or re.match(r'^Section \d+.*', line, re.IGNORECASE):
+                continue
+            
+            # Remove leading numbering like "1. ", "1) ", "Question 1: " etc.
+            clean_q = re.sub(r'^(\d+[\.\)]|Question \d+:?)\s*', '', line, flags=re.IGNORECASE).strip()
+            if clean_q:
+                questions.append(clean_q)
     
-    print(f"Processing question {i+1}/{len(questions_list)}: {clean_question[:50]}...")
+    return questions
+
+def generate_question_data(question, total_count, current_index):
+    print(f"Processing question {current_index}/{total_count}: {question[:50]}...")
     
-    # Create a strict prompt so the AI returns exactly the JSON we need
     prompt = f"""
     You are an expert AEM (Adobe Experience Manager) architect. 
     Analyze the following AEM interview question and generate 6 multiple-choice options (1 correct, 5 tricky but incorrect distractors), explanations for each, the correct answer index, an overall explanation, and the domain.
     
-    Question: "{clean_question}"
+    Question: "{question}"
     
     Respond ONLY with a valid JSON object matching this exact structure, with no markdown formatting or extra text.
     The "Correct Answers" must be a single digit (1, 2, 3, 4, 5, or 6) representing the index of the correct answer option.
@@ -74,32 +92,48 @@ for i, question in enumerate(questions_list):
     """
     
     try:
-        # Call the API
         response = model.generate_content(prompt)
         response_text = response.text.strip()
         
-        # Clean up the response in case the model included markdown code blocks
         if response_text.startswith("```json"):
             response_text = response_text[7:-3].strip()
             
-        # Parse the JSON and add it to our list
-        question_data = json.loads(response_text)
-        all_rows.append(question_data)
-        
-        # Sleep briefly to avoid hitting free-tier API rate limits
-        time.sleep(2) 
-        
+        return json.loads(response_text)
     except Exception as e:
-        print(f"Error processing question {i+1}: {e}")
-        # Append a blank/error row so the script doesn't completely fail
+        print(f"Error processing question: {e}")
         error_row = {col: "" for col in columns}
         error_row["Question"] = question
         error_row["Overall Explanation"] = f"ERROR GENERATING: {str(e)}"
-        all_rows.append(error_row)
+        return error_row
 
-# 3. Create a Pandas DataFrame and save to Excel
-df = pd.DataFrame(all_rows, columns=columns)
-output_filename = "AEM_Interview_Questions_Generated.xlsx"
-df.to_excel(output_filename, index=False)
+def main():
+    questions = load_questions(SOURCE_FOLDER, INPUT_FILE)
+    if not questions:
+        print("No questions found to process.")
+        return
 
-print(f"\nSuccess! Your Excel file has been saved as {output_filename}")
+    print(f"Starting generation for {len(questions)} questions...")
+    
+    output_path = os.path.join(SOURCE_FOLDER, OUTPUT_FILE)
+    writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
+    
+    chunk_size = 80
+    for i in range(0, len(questions), chunk_size):
+        chunk = questions[i:i + chunk_size]
+        chunk_index = (i // chunk_size) + 1
+        print(f"\n--- Generating Sheet {chunk_index} (Questions {i+1} to {i+len(chunk)}) ---")
+        
+        chunk_rows = []
+        for j, question in enumerate(chunk):
+            question_data = generate_question_data(question, len(questions), i + j + 1)
+            chunk_rows.append(question_data)
+            time.sleep(2) # API rate limit protection
+            
+        df = pd.DataFrame(chunk_rows, columns=columns)
+        df.to_excel(writer, sheet_name=f'Sheet{chunk_index}', index=False)
+    
+    writer.close()
+    print(f"\nSuccess! Your Excel file has been saved in: {output_path}")
+
+if __name__ == "__main__":
+    main()
