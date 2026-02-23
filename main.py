@@ -1,4 +1,5 @@
 import google.generativeai as genai
+from groq import Groq
 import pandas as pd
 import json
 import time
@@ -10,18 +11,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # 1. Configuration
-API_KEY = os.getenv("GEMINI_API_KEY")
-if not API_KEY:
-    raise ValueError("GEMINI_API_KEY not found in .env file")
-genai.configure(api_key=API_KEY)
+AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini").lower()
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Folder and File paths
 SOURCE_FOLDER = r"C:\Users\manis\Udemy\certifications\Interview Practice Tests\Updated\PENDING\AEM Interview Questions Practice Test"
 INPUT_FILE = "questions.txt"
 OUTPUT_FILE = "AEM_Interview_Questions_Generated.xlsx"
 
-# Use the Gemini model
-model = genai.GenerativeModel('gemini-2.5-flash')
+# Initialize the selected model
+model = None
+groq_client = None
+
+if AI_PROVIDER == "gemini":
+    if not GEMINI_API_KEY:
+        raise ValueError("GEMINI_API_KEY not found in .env file")
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel('gemini-2.5-flash')
+    print("Using Gemini API for generation.")
+elif AI_PROVIDER == "groq":
+    if not GROQ_API_KEY:
+        raise ValueError("GROQ_API_KEY not found in .env file")
+    groq_client = Groq(api_key=GROQ_API_KEY)
+    print("Using Groq API (Llama 3) for generation.")
+else:
+    raise ValueError(f"Unknown AI_PROVIDER: {AI_PROVIDER}")
 
 # The columns matching your template
 columns = [
@@ -56,6 +71,21 @@ def load_questions(folder_path, file_name):
                 questions.append(clean_q)
     
     return questions
+
+def get_ai_response(prompt):
+    if AI_PROVIDER == "gemini":
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    elif AI_PROVIDER == "groq":
+        chat_completion = groq_client.chat.completions.create(
+            messages=[{
+                "role": "user",
+                "content": prompt,
+            }],
+            model="llama-3.3-70b-versatile", # High quality free tier model
+            response_format={"type": "json_object"} # Groq supports strict JSON mode
+        )
+        return chat_completion.choices[0].message.content.strip()
 
 def generate_question_data(question, total_count, current_index):
     print(f"Processing question {current_index}/{total_count}: {question[:50]}...")
@@ -92,11 +122,13 @@ def generate_question_data(question, total_count, current_index):
     """
     
     try:
-        response = model.generate_content(prompt)
-        response_text = response.text.strip()
+        response_text = get_ai_response(prompt)
         
+        # Clean up the response in case the model ignored the JSON format instruction
         if response_text.startswith("```json"):
             response_text = response_text[7:-3].strip()
+        elif response_text.startswith("```"):
+            response_text = response_text[3:-3].strip()
             
         return json.loads(response_text)
     except Exception as e:
@@ -112,7 +144,7 @@ def main():
         print("No questions found to process.")
         return
 
-    print(f"Starting generation for {len(questions)} questions...")
+    print(f"Starting generation for {len(questions)} questions using {AI_PROVIDER}...")
     
     output_path = os.path.join(SOURCE_FOLDER, OUTPUT_FILE)
     writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
@@ -127,7 +159,10 @@ def main():
         for j, question in enumerate(chunk):
             question_data = generate_question_data(question, len(questions), i + j + 1)
             chunk_rows.append(question_data)
-            time.sleep(2) # API rate limit protection
+            # Sleep briefly to avoid hitting free-tier API rate limits
+            # Groq is faster, but Gemini free tier needs more padding
+            sleep_time = 2 if AI_PROVIDER == "gemini" else 1
+            time.sleep(sleep_time) 
             
         df = pd.DataFrame(chunk_rows, columns=columns)
         df.to_excel(writer, sheet_name=f'Sheet{chunk_index}', index=False)
