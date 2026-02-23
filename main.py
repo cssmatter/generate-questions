@@ -85,7 +85,7 @@ def get_ai_response(prompt):
                 "role": "user",
                 "content": prompt,
             }],
-            model="llama-3.3-70b-versatile", # High quality free tier model
+            model="llama-3.1-8b-instant", # Extremely low cost and high speed model
             response_format={"type": "json_object"} # Groq supports strict JSON mode
         )
         return chat_completion.choices[0].message.content.strip()
