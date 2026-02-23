@@ -372,7 +372,7 @@ def main():
     writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
     
     # Keeping chunk_size = 1 for testing as requested by the user
-    chunk_size = 1
+    chunk_size = 80
     for i in range(0, len(questions), chunk_size):
         chunk = questions[i:i + chunk_size]
         chunk_index = (i // chunk_size) + 1
@@ -382,8 +382,15 @@ def main():
         for j, question in enumerate(chunk):
             question_data = generate_question_data(question, len(questions), i + j + 1)
             chunk_rows.append(question_data)
+            
+            # Rate limit protection
             sleep_time = 2 if AI_PROVIDER == "gemini" else 1
             time.sleep(sleep_time) 
+            
+            # 5-second pause after every 5 questions
+            if (j + 1) % 5 == 0 and (j + 1) < len(chunk):
+                print("--- Rate limit pause (5s) ---")
+                time.sleep(5)
             
         df = pd.DataFrame(chunk_rows, columns=columns)
         
