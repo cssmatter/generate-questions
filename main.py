@@ -19,9 +19,9 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Folder and File paths
-SOURCE_FOLDER = r"C:\Users\manis\Udemy\certifications\Interview Practice Tests\Updated\PENDING\Agile Interview Questions Practice Test"
+SOURCE_FOLDER = r"C:\Users\manis\Udemy\certifications\Interview Practice Tests\Updated\PENDING\Apache Spark Interview Questions Practice Test"
 INPUT_FILE = "questions.txt"
-OUTPUT_FILE = "Agile_Interview_Questions_Generated.xlsx"
+OUTPUT_FILE = "Apache_Spark_Interview_Questions_Generated.xlsx"
 
 # Initialize the selected model
 model = None
@@ -94,8 +94,8 @@ def generate_question_data(question, total_count, current_index):
     print(f"Processing question {current_index}/{total_count}: {question[:50]}...")
     
     prompt = f"""
-    You are an expert Agile coach. 
-    Analyze the following Agile interview question and generate 6 multiple-choice options (1 correct, 5 tricky but incorrect distractors), explanations for each, the correct answer index, an overall explanation, and the domain.
+    You are an expert Apache Spark coach. 
+    Analyze the following Apache Spark interview question and generate 6 multiple-choice options (1 correct, 5 tricky but incorrect distractors), explanations for each, the correct answer index, an overall explanation, and the domain.
     
     Question: "{question}"
     
@@ -120,26 +120,33 @@ def generate_question_data(question, total_count, current_index):
       "Explanation 6": "Explanation why 6 is right/wrong",
       "Correct Answers": "1",
       "Overall Explanation": "A comprehensive summary of the concept",
-      "Domain": "Agile topic area (e.g., Scrum, Kanban, XP, SAFe)"
+      "Domain": "Apache Spark topic area (e.g., RDDs, DataFrames, Spark SQL, Streaming, MLlib)"
     }}
     """
     
-    try:
-        response_text = get_ai_response(prompt)
-        
-        # Clean up the response in case the model ignored the JSON format instruction
-        if response_text.startswith("```json"):
-            response_text = response_text[7:-3].strip()
-        elif response_text.startswith("```"):
-            response_text = response_text[3:-3].strip()
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            response_text = get_ai_response(prompt)
             
-        return json.loads(response_text)
-    except Exception as e:
-        print(f"Error processing question: {e}")
-        error_row = {col: "" for col in columns}
-        error_row["Question"] = question
-        error_row["Overall Explanation"] = f"ERROR GENERATING: {str(e)}"
-        return error_row
+            # Clean up the response in case the model ignored the JSON format instruction
+            if response_text.startswith("```json"):
+                response_text = response_text[7:-3].strip()
+            elif response_text.startswith("```"):
+                response_text = response_text[3:-3].strip()
+                
+            return json.loads(response_text)
+        except Exception as e:
+            if attempt < max_retries:
+                wait_time = 2 ** attempt  # 2s, 4s, 8s backoff
+                print(f"Error on attempt {attempt}/{max_retries}: {e}. Retrying in {wait_time}s...")
+                time.sleep(wait_time)
+            else:
+                print(f"Failed to process question after {max_retries} attempts: {e}")
+                error_row = {col: "" for col in columns}
+                error_row["Question"] = question
+                error_row["Overall Explanation"] = f"ERROR GENERATING: {str(e)}"
+                return error_row
 
 def clean_all_text(text):
     if not isinstance(text, str):
