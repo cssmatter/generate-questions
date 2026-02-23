@@ -6,7 +6,7 @@ import re
 
 # 1. Set up your API Key here
 # Get one for free at https://aistudio.google.com/
-API_KEY = "AIzaSyC5u_KwikvEk63pEygVOkCprjFHoXoMa-o"
+API_KEY = ""
 genai.configure(api_key=API_KEY)
 
 # Use the Gemini model
