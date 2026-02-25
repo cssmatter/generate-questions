@@ -18,66 +18,53 @@ AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini").lower()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+# Pipeline Control Flags
+GENERATE_QUESTIONS_AI = False       # Set to False to skip AI generation
+GENERATE_SHEETS_FROM_EXCEL = True  # Set to True to extract CSVs from existing Excel if AI is skipped
+GENERATE_MCQ_BOOK = True           # Set to False to skip DOCX/EPUB generation
+
 # Batch Folder List
-FOLDER_PATHS = [    
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Artificial Intelligence Machine Learning Basics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Artificial Intelligence Prediction & Forecasting – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Artificial Intelligence Recommendation Systems – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Artificial Intelligence System Design – Interview Questions Preparation",
+FOLDER_PATHS = [
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Advanced Pointers – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Algorithms Implementation – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Arrays & Strings – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Basics – Interview Questions Preparation",
     r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Bitwise Operations – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Coding Challenges – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Command-Line Arguments – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Complete Interview Preparation Course – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Control Flow (Loops & Conditions) – Interview Questions Preparation",
     r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Data Types & Variables – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Debugging & Error Handling – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Dynamic Memory Allocation – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Embedded C Fundamentals – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Enumerations & Typedef – Interview Questions Preparation",
     r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language File Handling – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Functions & Recursion – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Linked Lists Implementation – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Memory Management – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Operators & Expressions – Interview Questions Preparation",
     r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Optimization Techniques – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Pointers Essentials – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Preprocessor Directives – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Real-World Projects – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Searching & Sorting – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Stack & Queue Implementation – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Standard Libraries – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Storage Classes – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language String Handling Functions – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Structures & Unions – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language System Programming Basics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Algorithms & Techniques – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Applied Projects – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Big Data Tools (Hadoop, Spark) – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Business Analytics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Cloud Platforms (AWS, GCP, Azure) – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Complete Interview Preparation Course – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Data Cleaning & Preprocessing – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Data Engineering Basics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Data Visualization – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Deep Learning Fundamentals – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Ethics & Data Privacy – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Exploratory Data Analysis (EDA) – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Feature Engineering – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Foundations – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Interview Coding Challenges – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science MLOps & Deployment – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Machine Learning Basics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Mathematics & Statistics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Model Evaluation & Metrics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Model Optimization & Tuning – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Natural Language Processing – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Neural Networks – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science NumPy & Pandas – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Probability & Distributions – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Python Programming – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Real-World Case Studies – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science SQL for Analysts – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Supervised Learning – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Time Series Analysis – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Data Science Unsupervised Learning – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Model Evaluation & Metrics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Natural Language Processing – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Neural Networks – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Python Programming – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Recommendation Systems – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Regression Techniques – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Supervised Learning – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Time Series Forecasting – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Tree-Based Models – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Unsupervised Learning – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Algorithms Overview – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Big Data Tools (Spark MLlib) – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Case Studies & Real Projects – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Classification Techniques – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Cloud Platforms (AWS, GCP, Azure) – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Clustering Techniques – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Complete Interview Preparation Course – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Data Preprocessing – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Deep Learning Fundamentals – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Dimensionality Reduction – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Ensemble Methods – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Ethical & Responsible AI – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Feature Engineering – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Foundations – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Hyperparameter Tuning – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Interview Coding Challenges – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Linear Models – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning MLOps & Production Pipelines – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Mathematics & Statistics – Interview Questions Preparation",
+    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Model Deployment – Interview Questions Preparation",
 ]
 
 INPUT_FILE = "questions.txt"
@@ -231,7 +218,17 @@ def clean_all_text(text):
     if not isinstance(text, str): return text
     patterns = ["A. ", "B. ", "C. ", "D. ", "E. ", "F. ", "1. ", "2. ", "3. ", "4. ", "5. ", "6. ", "a. ", "b. ", "c. ", "d. ", "e. ", "f. "]
     for p in patterns: text = text.replace(p, "")
-    return text
+    return text.strip()
+
+def format_correct_answers(ans_val):
+    """Ensure correct answers are comma-separated with no spaces (e.g., '1,2,3')."""
+    if pd.isna(ans_val): return ""
+    ans_str = str(ans_val)
+    # Remove all spaces and ensure standard comma delimiter
+    ans_str = ans_str.replace(" ", "")
+    # If it was something like '1;2', clean that too
+    ans_str = ans_str.replace(";", ",")
+    return ans_str
 
 def merge_csv_files(folder_path, output_file):
     csv_files = [file for file in os.listdir(folder_path) if file.endswith(".csv") and file.startswith("Sheet")]
@@ -247,6 +244,7 @@ def merge_csv_files(folder_path, output_file):
     columns_to_keep = ["Question", "Question Type", "Answer Option 1", "Explanation 1", "Answer Option 2", "Explanation 2", "Answer Option 3", "Explanation 3", "Answer Option 4", "Explanation 4", "Answer Option 5", "Explanation 5", "Answer Option 6", "Explanation 6", "Correct Answers", "Overall Explanation", "Domain"]
     existing_columns = [c for c in columns_to_keep if c in merged_df.columns]
     merged_df = merged_df[existing_columns].dropna(subset=["Question", "Correct Answers", "Overall Explanation"])
+    merged_df["Correct Answers"] = merged_df["Correct Answers"].apply(format_correct_answers)
     merged_df.to_csv(output_file, index=False, encoding='utf-8-sig')
     return merged_df
 
@@ -365,58 +363,84 @@ def process_single_folder(folder_path):
         print(f"Error: Folder does not exist: {folder_path}")
         return
         
-    questions = load_questions(folder_path, INPUT_FILE)
-    if not questions: return
-    
-    # Truncate topic name for filename to avoid Windows MAX_PATH (260 chars) issues
-    safe_topic = topic_name.replace(' ', '_')
-    if len(safe_topic) > 50:
-        safe_topic = safe_topic[:50]
-    
-    output_xlsx = f"{safe_topic}_Generated.xlsx"
-    output_path = os.path.join(folder_path, output_xlsx)
-    
-    writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
-    
-    chunk_size = 20
-    for i in range(0, len(questions), chunk_size):
-        chunk = questions[i:i + chunk_size]
-        chunk_index = (i // chunk_size) + 1
-        print(f"\n--- Sheet {chunk_index} ({i+1} to {i+len(chunk)}) ---")
-        chunk_rows = []
+    # AI Generation Phase
+    if GENERATE_QUESTIONS_AI:
+        questions = load_questions(folder_path, INPUT_FILE)
+        if not questions: return
         
-        # Calculate how many multi-select questions we need in this chunk (20%)
-        multi_select_count = max(1, int(len(chunk) * 0.20)) if len(chunk) >= 5 else (1 if len(chunk) > 0 else 0)
-        # Distribute them evenly or at the start - let's distribute them roughly every 5th question
-        multi_select_indices = [idx for idx in range(len(chunk)) if (idx + 1) % 5 == 0]
-        # Adjust if count doesn't match indices (e.g. chunk size not multiple of 5)
-        if len(multi_select_indices) < multi_select_count:
-            for idx in range(len(chunk)):
-                if idx not in multi_select_indices:
-                    multi_select_indices.append(idx)
-                    if len(multi_select_indices) >= multi_select_count: break
+        # Truncate topic name for filename to avoid Windows MAX_PATH (260 chars) issues
+        safe_topic = topic_name.replace(' ', '_')
+        if len(safe_topic) > 50:
+            safe_topic = safe_topic[:50]
         
-        for j, question in enumerate(chunk):
-            target_type = "multi-select" if j in multi_select_indices else "multiple-choice"
-            chunk_rows.append(generate_question_data(question, len(questions), i + j + 1, topic_name, target_type))
-            time.sleep(2 if AI_PROVIDER == "gemini" else 1)
-            if (j + 1) % 10 == 0 and (j + 1) < len(chunk):
-                print("--- Rate limit pause (5s) ---"); time.sleep(3)
+        output_xlsx = f"{safe_topic}_Generated.xlsx"
+        output_path = os.path.join(folder_path, output_xlsx)
         
-        df = pd.DataFrame(chunk_rows, columns=columns)
-        for col in df.columns: df[col] = df[col].apply(clean_all_text)
-        df.to_excel(writer, sheet_name=f'Sheet{chunk_index}', index=False)
-        df.to_csv(os.path.join(folder_path, f"Sheet{chunk_index}.csv"), index=False, encoding='utf-8-sig')
+        writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
+        
+        chunk_size = 20
+        for i in range(0, len(questions), chunk_size):
+            chunk = questions[i:i + chunk_size]
+            chunk_index = (i // chunk_size) + 1
+            print(f"\n--- Sheet {chunk_index} ({i+1} to {i+len(chunk)}) ---")
+            chunk_rows = []
+            
+            # Calculate how many multi-select questions we need in this chunk (20%)
+            multi_select_count = max(1, int(len(chunk) * 0.20)) if len(chunk) >= 5 else (1 if len(chunk) > 0 else 0)
+            multi_select_indices = [idx for idx in range(len(chunk)) if (idx + 1) % 5 == 0]
+            if len(multi_select_indices) < multi_select_count:
+                for idx in range(len(chunk)):
+                    if idx not in multi_select_indices:
+                        multi_select_indices.append(idx)
+                        if len(multi_select_indices) >= multi_select_count: break
+            
+            for j, question in enumerate(chunk):
+                target_type = "multi-select" if j in multi_select_indices else "multiple-choice"
+                chunk_rows.append(generate_question_data(question, len(questions), i + j + 1, topic_name, target_type))
+                time.sleep(2 if AI_PROVIDER == "gemini" else 1)
+                if (j + 1) % 10 == 0 and (j + 1) < len(chunk):
+                    print("--- Rate limit pause (5s) ---"); time.sleep(3)
+            
+            df = pd.DataFrame(chunk_rows, columns=columns)
+            for col in df.columns: df[col] = df[col].apply(clean_all_text)
+            # Apply correct answers formatting
+            df["Correct Answers"] = df["Correct Answers"].apply(format_correct_answers)
+            
+            df.to_excel(writer, sheet_name=f'Sheet{chunk_index}', index=False)
+            df.to_csv(os.path.join(folder_path, f"Sheet{chunk_index}.csv"), index=False, encoding='utf-8-sig')
+        
+        writer.close()
     
-    writer.close()
-    merged_csv = os.path.join(folder_path, "Merged_Questions.csv")
-    merged_df = merge_csv_files(folder_path, merged_csv)
-    if merged_df is not None:
-        title = os.path.basename(folder_path.rstrip(os.sep))
-        docx_p = os.path.join(folder_path, "MCQ_Ebook.docx")
-        epub_p = os.path.join(folder_path, "MCQ_Ebook.epub")
-        create_docx(merged_df, title, docx_p)
-        convert_docx_to_epub(docx_p, epub_p, title)
+    # Excel to CSV Extraction Phase (only if AI generation was skipped)
+    elif GENERATE_SHEETS_FROM_EXCEL:
+        print("Skipping AI generation. Attempting to extract sheets from existing Excel file...")
+        xlsx_files = [f for f in os.listdir(folder_path) if f.endswith("_Generated.xlsx")]
+        if xlsx_files:
+            excel_path = os.path.join(folder_path, xlsx_files[0])
+            print(f"Found Excel: {excel_path}")
+            xls = pd.ExcelFile(excel_path)
+            for i, sheet_name in enumerate(xls.sheet_names, start=1):
+                df = pd.read_excel(xls, sheet_name=sheet_name)
+                # Verify and format while generating CSV
+                if "Correct Answers" in df.columns:
+                    df["Correct Answers"] = df["Correct Answers"].apply(format_correct_answers)
+                df.to_csv(os.path.join(folder_path, f"Sheet{i}.csv"), index=False, encoding='utf-8-sig')
+                print(f"Extracted {sheet_name} to Sheet{i}.csv")
+        else:
+            print("No *_Generated.xlsx file found to extract from.")
+
+    # Book Generation Phase
+    if GENERATE_MCQ_BOOK:
+        merged_csv = os.path.join(folder_path, "Merged_Questions.csv")
+        merged_df = merge_csv_files(folder_path, merged_csv)
+        if merged_df is not None:
+            title = os.path.basename(folder_path.rstrip(os.sep))
+            docx_p = os.path.join(folder_path, "MCQ_Ebook.docx")
+            epub_p = os.path.join(folder_path, "MCQ_Ebook.epub")
+            create_docx(merged_df, title, docx_p)
+            convert_docx_to_epub(docx_p, epub_p, title)
+            print(f"Ebook generated: {docx_p}")
+    
     print(f"\nFinished processing: {topic_name}")
 
 def main():
@@ -431,8 +455,8 @@ def main():
         FOLDER_PATHS.pop(0)
         
         if FOLDER_PATHS:
-            print(f"\n--- Waiting 1 minute before next folder ({len(FOLDER_PATHS)} folders remaining) ---")
-            time.sleep(60)
+            print(f"\n--- Waiting 5 Secounds before next folder ({len(FOLDER_PATHS)} folders remaining) ---")
+            time.sleep(5)
 
 if __name__ == "__main__":
     main()
