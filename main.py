@@ -21,7 +21,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # Pipeline Control Flags
 GENERATE_ANSWERS_AI = True       # Set to False to skip AI generation answers
 GENERATE_SHEETS_FROM_EXCEL = True  # Set to True to extract CSVs from existing Excel if AI is skipped
-GENERATE_MCQ_BOOK = False           # Set to True to generate DOCX/EPUB
+GENERATE_MCQ_BOOK = True           # Set to True to generate DOCX/EPUB
 
 # Batch Folder List
 FOLDER_PATHS = [
