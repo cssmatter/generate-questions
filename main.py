@@ -19,53 +19,179 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Pipeline Control Flags
-GENERATE_QUESTIONS_AI = False       # Set to False to skip AI generation
+GENERATE_ANSWERS_AI = True       # Set to False to skip AI generation answers
 GENERATE_SHEETS_FROM_EXCEL = True  # Set to True to extract CSVs from existing Excel if AI is skipped
-GENERATE_MCQ_BOOK = True           # Set to False to skip DOCX/EPUB generation
+GENERATE_MCQ_BOOK = False           # Set to True to generate DOCX/EPUB
 
 # Batch Folder List
 FOLDER_PATHS = [
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Advanced Pointers – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Algorithms Implementation – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Arrays & Strings – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Basics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Bitwise Operations – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Coding Challenges – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Command-Line Arguments – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Complete Interview Preparation Course – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Control Flow (Loops & Conditions) – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Data Types & Variables – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Debugging & Error Handling – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Dynamic Memory Allocation – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Embedded C Fundamentals – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Enumerations & Typedef – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language File Handling – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Functions & Recursion – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Linked Lists Implementation – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Memory Management – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Operators & Expressions – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\C Language Optimization Techniques – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Algorithms Overview – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Big Data Tools (Spark MLlib) – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Case Studies & Real Projects – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Classification Techniques – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Cloud Platforms (AWS, GCP, Azure) – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Clustering Techniques – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Complete Interview Preparation Course – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Data Preprocessing – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Deep Learning Fundamentals – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Dimensionality Reduction – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Ensemble Methods – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Ethical & Responsible AI – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Feature Engineering – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Foundations – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Hyperparameter Tuning – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Interview Coding Challenges – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Linear Models – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning MLOps & Production Pipelines – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Mathematics & Statistics – Interview Questions Preparation",
-    r"C:\Users\manis\Udemy\certifications\jitendra\Pending\Harshu-Assigments\Pending\Machine Learning Model Deployment – Interview Questions Preparation",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified AI Practitioner",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Advanced Networking – Specialty",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Cloud Practitioner",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified CloudOps Engineer – Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Data Engineer – Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified DevOps Engineer – Professional",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Developer – Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Machine Learning Engineer – Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Machine Learning – Specialty",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Security – Specialty",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Solutions Architect – Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AWS Certified Solutions Architect – Professional",
+    r"C:\git\generate-questions\question_generation\question_generation\output\AZ-800 Administering Windows Server Hybrid Core Infrastructure",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Associate Cloud Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Associate Data Practitioner Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Associate Google Workspace Administrator Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Blue Prism Certified Developer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CCNA",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CFA Program Level I",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CFA Program Level II",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CKA Certified Kubernetes Administrator",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CKAD Certified Kubernetes Application Developer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CKS Certified Kubernetes Security Specialist",
+    r"C:\git\generate-questions\question_generation\question_generation\output\COBIT® 2019 Foundation Certificate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certificate of Cloud Security Knowledge v.5",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certification of Capability in Business Analysis™",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Application Developer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Associate in Project Management (CAPM)®",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Cloud Security Professional (CCSP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Information Security Manager® (CISM)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Information Systems Auditor® (CISA)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Information Systems Security Professional (CISSP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Internal Auditor (CIA)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified Management Accountant",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified SAFe® 6 Agilist",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified SAFe® 6 Product OwnerProduct Manager",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified SAFe® 6 Scrum Master",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified System Administrator",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified in Cybersecurity (CC)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified in Governance, Risk and Compliance (CGRC)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Certified in Risk and Information Systems Control™ (CRISC)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Check Point Certified Security Expert CCSE R81",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Cisco Certified CyberOps Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Cisco Certified Internetwork Expert Data Center (CCIE Data Center)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Cisco Certified Internetwork Expert Enterprise Infrastructure (CCIE Enterprise Infrastructure)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Cisco Certified Internetwork Expert Security (CCIE Security)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA CySA+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Data+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA DataSys+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Linux+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Network+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA PenTest+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Project+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Security+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA SecurityX Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Server+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\CompTIA Tech+ Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\DAMA CDMP Certification - Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\DAMA CDMP Certification - Practitioner",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Databricks Certified Associate Developer for Apache Spark 3.0",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Databricks Certified Data Engineer Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\F5 Certified! Administrator, BIG-IP (F5-CA, BIG-IP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\FE Exam",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Generative AI Leader Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\GitHub Actions",
+    r"C:\git\generate-questions\question_generation\question_generation\output\GitHub Administration",
+    r"C:\git\generate-questions\question_generation\question_generation\output\GitHub Advanced Security",
+    r"C:\git\generate-questions\question_generation\question_generation\output\GitHub Copilot",
+    r"C:\git\generate-questions\question_generation\question_generation\output\GitHub Foundations",
+    r"C:\git\generate-questions\question_generation\question_generation\output\HashiCorp Certified Consul Associate (003)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\HashiCorp Certified Terraform Associate (004)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\HashiCorp Certified Vault Associate (003)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester - AI Testing (CT-AI)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester - Mobile Application Testing (CT-MAT)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester Advanced Level - Technical Test Analyst (CTAL-TTA)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester Advanced Level - Test Analyst (CTAL-TA)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester Advanced Level - Test Manager (CTAL-TM)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester Foundation Level (CTFL)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\ISTQB® Certified Tester Foundation Level - Agile Tester (CTFL-AT)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Juniper Networks Certified Associate, Junos (JNCIA-Junos)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Juniper Networks Certified Specialist, Service Provider Routing & Switching (JNCIS-SP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\KCNA Kubernetes and Cloud Native Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Lean Six Sigma Black Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Lean Six Sigma Green Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Lean Six Sigma White Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Lean Six Sigma Yellow Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Linux Essentials Certificate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\MB-240 Microsoft Dynamics 365 Field Service Functional Consultant",
+    r"C:\git\generate-questions\question_generation\question_generation\output\MB-500 Microsoft Dynamics 365 Finance and Operations Apps Developer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\MCE Microsoft Certified Educator",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft 365 Certified Fundamentals",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft 365 Certified Teams Administrator Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure AI Fundamentals",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Administrator Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Data Fundamentals",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Data Scientist Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Database Administrator Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Developer Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Fundamentals",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Network Engineer Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Security Engineer Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Solutions Architect Expert",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Azure Virtual Desktop Specialty",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Cybersecurity Architect Expert",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified DevOps Engineer Expert",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Dynamics 365 Field Service Functional Consultant Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Dynamics 365 Finance Functional Consultant Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Dynamics 365 Finance and Operations Apps Developer Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Dynamics 365 Finance and Operations Apps Solution Architect Expert",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Identity and Access Administrator Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Power BI Data Analyst Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Power Platform Developer Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Power Platform Functional Consultant Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Power Platform Fundamentals",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Security Operations Analyst Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Security, Compliance, and Identity Fundamentals",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Microsoft Certified Windows Server Hybrid Administrator Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Oracle Database PLSQL Developer Certified Professional",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Oracle Database SQL Certified Associate",
+    r"C:\git\generate-questions\question_generation\question_generation\output\PL-600 Microsoft Power Platform Solution Architect",
+    r"C:\git\generate-questions\question_generation\question_generation\output\PMI Agile Certified Practitioner (PMI-ACP)®",
+    r"C:\git\generate-questions\question_generation\question_generation\output\PMI Professional in Business Analysis (PMI-PBA)®",
+    r"C:\git\generate-questions\question_generation\question_generation\output\PMI Risk Management Professional (PMI-RMP)®",
+    r"C:\git\generate-questions\question_generation\question_generation\output\PTCB Certified Pharmacy Technician",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Cloud Architect",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Cloud Database Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Cloud DevOps Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Cloud Developer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Cloud Network Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Cloud Security Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Data Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Machine Learning Engineer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional Scrum Product Owner™ I (PSPO I)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Professional in Human Resources® (PHR®)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Program Management Professional (PgMP)®",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Project Management Professional (PMP)®",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Red Hat Certified Engineer (RHCE)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Red Hat Certified System Administrator (RHCSA)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAP Certified Associate - Back-End Developer - ABAP Cloud",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAP Certified Associate - SAP Activate Project Manager",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAP Certified Associate - SAP S4HANA Cloud Private Edition, Extended Warehouse Management",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAP Certified Associate - SAP S4HANA Cloud Private Edition, Transportation Management",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAP Certified Professional - SAP Enterprise Architect",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAS Certified Professional Advanced Programming Using SAS 9.4",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SAS Certified Specialist Base Programming Using SAS 9.4",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SHRM Certified Professional (SHRM-CP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SHRM Senior Certified Professional (SHRM-SCP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Six Sigma Black Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Six Sigma Green Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Six Sigma White Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Six Sigma Yellow Belt Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SnowPro Advanced Architect",
+    r"C:\git\generate-questions\question_generation\question_generation\output\SnowPro Core Certification",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Splunk Core Certified Power User",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Splunk Core Certified User",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Splunk Enterprise Certified Admin",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Spring Certified Professional 2024 [v2]",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Systems Security Certified Practitioner (SSCP)",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Tableau Certified Data Analyst",
+    r"C:\git\generate-questions\question_generation\question_generation\output\Tableau Desktop Specialist",
+    r"C:\git\generate-questions\question_generation\question_generation\output\VMware Certified Professional - Data Center Virtualization",
+    r"C:\git\generate-questions\question_generation\question_generation\output\VMware Certified Professional - Network Virtualization",
+    r"C:\git\generate-questions\question_generation\question_generation\output\VMware Certified Technical Associate - Data Center Virtualization",
+    r"C:\git\generate-questions\question_generation\question_generation\output\[PCAP-31-03] PCAP – Certified Associate Python Programmer",
+    r"C:\git\generate-questions\question_generation\question_generation\output\[PCEP-30-02] PCEP™ – Certified Entry-Level Python Programmer",
 ]
+
 
 INPUT_FILE = "questions.txt"
 
@@ -364,7 +490,7 @@ def process_single_folder(folder_path):
         return
         
     # AI Generation Phase
-    if GENERATE_QUESTIONS_AI:
+    if GENERATE_ANSWERS_AI:
         questions = load_questions(folder_path, INPUT_FILE)
         if not questions: return
         
@@ -378,7 +504,7 @@ def process_single_folder(folder_path):
         
         writer = pd.ExcelWriter(output_path, engine='xlsxwriter')
         
-        chunk_size = 20
+        chunk_size = 250
         for i in range(0, len(questions), chunk_size):
             chunk = questions[i:i + chunk_size]
             chunk_index = (i // chunk_size) + 1
@@ -414,11 +540,18 @@ def process_single_folder(folder_path):
     # Excel to CSV Extraction Phase (only if AI generation was skipped)
     elif GENERATE_SHEETS_FROM_EXCEL:
         print("Skipping AI generation. Attempting to extract sheets from existing Excel file...")
+        target_xlsx = None
         xlsx_files = [f for f in os.listdir(folder_path) if f.endswith("_Generated.xlsx")]
         if xlsx_files:
-            excel_path = os.path.join(folder_path, xlsx_files[0])
-            print(f"Found Excel: {excel_path}")
-            xls = pd.ExcelFile(excel_path)
+            target_xlsx = os.path.join(folder_path, xlsx_files[0])
+        else:
+            q_xlsx = os.path.join(folder_path, "questions.xlsx")
+            if os.path.exists(q_xlsx):
+                target_xlsx = q_xlsx
+        
+        if target_xlsx:
+            print(f"Found Excel: {target_xlsx}")
+            xls = pd.ExcelFile(target_xlsx)
             for i, sheet_name in enumerate(xls.sheet_names, start=1):
                 df = pd.read_excel(xls, sheet_name=sheet_name)
                 # Verify and format while generating CSV
@@ -427,7 +560,7 @@ def process_single_folder(folder_path):
                 df.to_csv(os.path.join(folder_path, f"Sheet{i}.csv"), index=False, encoding='utf-8-sig')
                 print(f"Extracted {sheet_name} to Sheet{i}.csv")
         else:
-            print("No *_Generated.xlsx file found to extract from.")
+            print("No suitable Excel file found (*_Generated.xlsx or questions.xlsx).")
 
     # Book Generation Phase
     if GENERATE_MCQ_BOOK:
